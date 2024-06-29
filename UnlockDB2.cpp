@@ -77,11 +77,23 @@ bool is_admin() {
 void run_as_admin() {
     wchar_t szPath[MAX_PATH];
     if (GetModuleFileNameW(NULL, szPath, ARRAYSIZE(szPath))) {
-        SHELLEXECUTEINFOW sei = { sizeof(sei) };
+        SHELLEXECUTEINFOW sei = { 0 };
+        sei.cbSize = sizeof(sei);
+        sei.fMask = SEE_MASK_NOCLOSEPROCESS;
+        sei.hwnd = NULL;
         sei.lpVerb = L"runas";
         sei.lpFile = szPath;
-        sei.hwnd = NULL;
+        sei.lpParameters = NULL;
+        sei.lpDirectory = NULL;
         sei.nShow = SW_NORMAL;
+        sei.hInstApp = NULL;
+        sei.lpIDList = NULL;
+        sei.lpClass = NULL;
+        sei.hkeyClass = NULL;
+        sei.dwHotKey = 0;
+        sei.hIcon = NULL;
+        sei.hProcess = NULL;
+
         if (!ShellExecuteExW(&sei)) {
             DWORD dwError = GetLastError();
             if (dwError == ERROR_CANCELLED) {
