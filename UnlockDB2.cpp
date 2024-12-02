@@ -170,3 +170,4 @@ void kill_process(DWORD processId) {
         CloseHandle(hProcess);
     }
 }
+
